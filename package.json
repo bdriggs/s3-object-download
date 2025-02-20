@@ -4,6 +4,7 @@
   "description": "Simple app to download the contents of an AWS S3 bucket",
   "main": "index.js",
   "scripts": {
+    "dev": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/bdriggs/s3-object-download/issues"
   },
-  "homepage": "https://github.com/bdriggs/s3-object-download#readme"
+  "homepage": "https://github.com/bdriggs/s3-object-download#readme",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.750.0",
+    "dotenv": "^16.4.7"
+  },
+  "type": "module"
 }
