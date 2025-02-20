@@ -1,0 +1,19 @@
+{
+  "name": "s3-object-download",
+  "version": "1.0.0",
+  "description": "Simple app to download the contents of an AWS S3 bucket",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bdriggs/s3-object-download.git"
+  },
+  "author": "BDR",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bdriggs/s3-object-download/issues"
+  },
+  "homepage": "https://github.com/bdriggs/s3-object-download#readme"
+}
