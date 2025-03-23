@@ -5,7 +5,7 @@ import fs from "node:fs";
 
 import {
   S3Client,
-  ListObjectsCommand,
+  ListObjectsV2Command,
   GetObjectCommand,
 } from "@aws-sdk/client-s3";
 
@@ -18,26 +18,30 @@ export async function main() {
     },
   });
 
-  const { Contents } = await s3Client.send(
-    new ListObjectsCommand({ Bucket: process.env.S3_BUCKET_NAME })
-  );
+  const input = {
+    Bucket: process.env.S3_BUCKET_NAME,
+  };
+  const command = new ListObjectsV2Command(input);
+  const response = await s3Client.send(command);
   const path = process.env.OUTPUT_PATH;
 
-  for (const content of Contents) {
-    const obj = await s3Client.send(
-      new GetObjectCommand({
-        Bucket: process.env.S3_BUCKET_NAME,
-        Key: content.Key,
-      })
-    );
+  for (const item of response.Contents) {
+    if (!fs.existsSync(`${path}/${item.Key}`)) {
+      const obj = await s3Client.send(
+        new GetObjectCommand({
+          Bucket: process.env.S3_BUCKET_NAME,
+          Key: item.Key,
+        })
+      );
+    }
 
-    if (content.Size === 0) {
-      if (!fs.existsSync(`${path}/${content.Key}`)) {
-        fs.mkdirSync(`${path}/${content.Key}`);
+    if (item.Size === 0) {
+      if (!fs.existsSync(`${path}/${item.Key}`)) {
+        fs.mkdirSync(`${path}/${item.Key}`);
       }
     } else {
       writeFileSync(
-        `${path}/${content.Key}`,
+        `${path}/${item.Key}`,
         await obj.Body.transformToByteArray()
       );
     }
